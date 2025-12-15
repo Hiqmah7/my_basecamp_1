@@ -1,0 +1,46 @@
+<div class="container">
+  <h1>Users Management</h1>
+
+  <% if @users.any? %>
+    <table class="users-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Created</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td><%= user.name %></td>
+            <td><%= user.email %></td>
+            <td>
+              <span class="badge <%= 'badge-admin' if user.admin? %>">
+                <%= user.role.titleize %>
+              </span>
+            </td>
+            <td><%= user.created_at.strftime("%b %d, %Y") %></td>
+            <td>
+              <%= link_to "View", user_path(user), class: "btn btn-sm btn-secondary" %>
+              <% if user.member? %>
+                <%= link_to "Make Admin", set_admin_user_path(user), method: :patch, class: "btn btn-sm btn-primary" %>
+              <% elsif user.admin? && user.id != current_user.id %>
+                <%= link_to "Remove Admin", remove_admin_user_path(user), method: :patch, class: "btn btn-sm btn-warning" %>
+              <% end %>
+              <% if user.id != current_user.id %>
+                <%= link_to "Delete", user_path(user), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No users found.</p>
+  <% end %>
+
+  <%= link_to "Back", root_path, class: "btn btn-secondary" %>
+</div>

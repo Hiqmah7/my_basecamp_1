@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="card">
+    <h1><%= @user.name %></h1>
+    
+    <div class="user-details">
+      <p>
+        <strong>Email:</strong>
+        <%= @user.email %>
+      </p>
+      <p>
+        <strong>Role:</strong>
+        <span class="badge <%= 'badge-admin' if @user.admin? %>">
+          <%= @user.role.titleize %>
+        </span>
+      </p>
+      <p>
+        <strong>Member since:</strong>
+        <%= @user.created_at.strftime("%B %d, %Y") %>
+      </p>
+    </div>
+
+    <div class="actions">
+      <% if current_user.id == @user.id || current_user.admin? %>
+        <%= link_to "Delete Account", user_path(@user), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+      <% end %>
+      
+      <% if current_user.id == @user.id %>
+        <%= link_to "Back to Projects", projects_path, class: "btn btn-secondary" %>
+      <% end %>
+    </div>
+  </div>
+</div>
