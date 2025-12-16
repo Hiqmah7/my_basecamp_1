@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="card">
+    <h1><%= @project.name %></h1>
+    <p class="project-description"><%= @project.description %></p>
+    <p>by <strong><%= @project.user.name %></strong></p>
+
+    <% if logged_in? && @project.owner?(current_user) %>
+      <div class="actions">
+        <%= link_to "Edit", edit_project_path(@project), class: "btn btn-secondary" %>
+        <%= button_to "Delete", project_path(@project), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+        <%= link_to "Back", projects_path, class: "btn btn-secondary" %>
+      </div>
+    <% else %>
+      <div class="actions">
+        <%= link_to "Back", projects_path, class: "btn btn-secondary" %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="header-with-button">
+    <h1>Projects</h1>
+    <% if logged_in? %>
+      <%= link_to "New Project", new_project_path, class: "btn btn-primary" %>
+    <% end %>
+  </div>
+
+  <% if @projects.any? %>
+    <div class="projects-grid">
+      <% @projects.each do |project| %>
+        <div class="project-card">
+          <h3><%= link_to project.name, project_path(project) %></h3>
+          <p class="project-description"><%= truncate(project.description, length: 100) %></p>
+          <p class="project-owner">by <%= project.user.name %></p>
+          <div class="project-actions">
+            <%= link_to "View", project_path(project), class: "btn btn-secondary" %>
+            <% if logged_in? && project.owner?(current_user) %>
+              <%= link_to "Edit", edit_project_path(project), class: "btn btn-secondary" %>
+              <%= button_to "Delete", project_path(project), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p>No projects yet. <% if logged_in? %><%= link_to "Create one", new_project_path %><% end %></p>
+  <% end %>
+</div>
